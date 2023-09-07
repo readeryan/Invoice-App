@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class FruitCategory extends Model
+class FruitItem extends Model
 {
     use HasFactory;
     use SoftDeletes;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -19,13 +18,14 @@ class FruitCategory extends Model
      */
     protected $fillable = [
         'name',
+        'price',
+        'unit'
     ];
-
     /**
-     * Get the Item for the category.
+     * Get the category that owns the item.
      */
-    public function item(): HasMany
+    public function category(): BelongsTo
     {
-        return $this->hasMany(FruitItem::class);
+        return $this->belongsTo(FruitCategory::class, 'fruit_category_id');
     }
 }
