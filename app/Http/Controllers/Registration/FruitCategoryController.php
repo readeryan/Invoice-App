@@ -13,7 +13,7 @@ class FruitCategoryController extends Controller
     public function create()
     {
         // dd(5);
-        $categories = FruitCategory::all();
+        $categories = FruitCategory::paginate(3);
         return view('fruit.category')->with('categories', $categories);
     }
     /**

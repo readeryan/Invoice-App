@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Registration\FruitItemController;
 use App\Http\Controllers\Registration\FruitCategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,15 +37,26 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('fruit-item', [FruitItemController::class, 'create'])
+        ->name('item');
+    Route::post('fruit-item', [FruitItemController::class, 'store'])
+        ->name('item.store');
+    Route::get('fruit-item/{id}/edit', [FruitItemController::class, 'edit'])
+        ->name('item.edit');
+    Route::get('fruit-item/{id}/delete', [FruitItemController::class, 'delete'])
+        ->name('item.delete');
+    Route::post('fruit-item/{id}/update', [FruitItemController::class, 'update'])
+        ->name('item.update');
+
     Route::get('fruit-category', [FruitCategoryController::class, 'create'])
         ->name('category');
+    Route::post('fruit-category', [FruitCategoryController::class, 'store'])->name("category.store");
     Route::get('fruit-category/{id}/edit', [FruitCategoryController::class, 'edit'])
         ->name('category.edit');
     Route::get('fruit-category/{id}/delete', [FruitCategoryController::class, 'delete'])
         ->name('category.delete');
     Route::post('fruit-category/{id}/update', [FruitCategoryController::class, 'update'])
         ->name('category.update');
-    Route::post('fruit-category', [FruitCategoryController::class, 'store'])->name("category.store");
 
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
         ->name('verification.notice');
