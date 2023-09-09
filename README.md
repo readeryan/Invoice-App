@@ -26,7 +26,10 @@ Total 51
 
 <h2>Installation</h2>
 <p>Run following command in cmd or terminal </p>
+<p>Run <code> composer install</code></p>
 <p>Run <code> npm install && npm run dev</code></p>
+<p>Run <code> cp .env.example .env</code></p>
+<p>Run <code> php artisan key:generate</code></p>
 <p>Run <code> php artisan migrate</code></p>
 <p>Run <code> php artisan db:seed</code></p>
 <p>Run <code> php artisan serve</code></p>

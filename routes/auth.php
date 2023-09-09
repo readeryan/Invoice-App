@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Invoice\TransactionController;
 use App\Http\Controllers\Registration\FruitItemController;
 use App\Http\Controllers\Registration\FruitCategoryController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('invoice', [TransactionController::class, 'create'])
+        ->name('invoice');
+
     Route::get('fruit-item', [FruitItemController::class, 'create'])
         ->name('item');
     Route::post('fruit-item', [FruitItemController::class, 'store'])
