@@ -17,8 +17,17 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->integer("item_quantity");
             $table->integer("item_amount");
-            $table->foreignId('fruit_item_id')->nullable()->constrained();
-            $table->foreignId('invoice_id')->nullable()->constrained();
+            $table->foreignId('fruit_item_id')
+                ->nullable()
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('invoice_id')
+                ->nullable()
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

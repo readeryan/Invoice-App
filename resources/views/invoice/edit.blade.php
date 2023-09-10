@@ -14,9 +14,10 @@
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <div class="">
-                @livewire('invoice-maker', ['action'=>route('invoice.store'),
-                'title'=>'Create Invoice'])
+            <div>
+                @livewire('invoice-maker', [ 'invoice'=>$invoice,
+                'action'=>route('invoice.update', ['id'=>$invoice->id]),
+                'title'=>'Edit Invoice' ])
             </div>
         </div>
     </div>

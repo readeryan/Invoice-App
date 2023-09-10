@@ -26,7 +26,7 @@ class SampleSeeder extends Seeder
         ]);
         $cat1->item()->create([
             'name' => "Apple 1",
-            "price" => 20,
+            "price" => 10,
             "unit" => "Kg"
         ]);
         $cat2->item()->create([
@@ -36,22 +36,22 @@ class SampleSeeder extends Seeder
         ]);
         $cat3->item()->create([
             'name' => "Pear 1",
-            "price" => 20,
+            "price" => 30,
             "unit" => "Kg"
         ]);
         $cat1->item()->create([
             'name' => "Apple 2",
-            "price" => 20,
+            "price" => 40,
             "unit" => "Kg"
         ]);
         $cat2->item()->create([
             'name' => "Orange 2",
-            "price" => 20,
+            "price" => 50,
             "unit" => "Kg"
         ]);
         $cat3->item()->create([
             'name' => "Pear 2",
-            "price" => 20,
+            "price" => 60,
             "unit" => "Kg"
         ]);
     }

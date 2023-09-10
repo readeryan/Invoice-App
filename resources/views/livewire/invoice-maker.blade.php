@@ -1,23 +1,39 @@
-<form wire:submit="save" class="md:grid md:gap-6">
+<form method="POST" action="{{$action}}" class="md:grid md:gap-6">
     <h1 name="title">
-        {{ __("Create Invoice") }}
+        {{ $title }}
     </h1>
     @csrf
     <div name="form" class="mt-5 md:mt-0 md:col-span-2">
         <div class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-md">
+            @if ($errors->any())
+                <div class="text-red-500">
+                    @foreach ($errors->all() as $error)
+                        {{ $error }}<br>
+                    @endforeach
+                </div>
+            @endif
+            @if(session('success'))
+                <div class="text-green-400">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="grid grid-cols-6 gap-6" id="multi-form-container">
+                {{-- Customer Name --}}
                 <div class="col-span-6">
                     <label for="customer_name">
                         {{ __("Customer Name") }}
                     </label>
                     <input
+                        id="customer_name"
+                        name="customer-name"
+                        wire:model="customer_name"
                         required
-                        type="text"
-                        wire:model="invoice.customer_name"
+                        type="text"                        
                         placeholder="cust. name"
                     />
                 </div>
-                <div class="grid grid-cols-6 col-span-6 gap-4">
+                {{-- Form Label --}}
+                <div class="hidden sm:grid grid-cols-1 col-span-1 sm:grid-cols-7 sm:col-span-6 gap-4 items-center">
                     <h1 class="text-center">
                         {{ __("Category") }}
                     </h1>
@@ -41,71 +57,49 @@
                     <h1 class="text-center">
                         {{ __("Amount") }}
                     </h1>
+                    <h1 class="text-center">
+                        {{ __("Action") }}
+                    </h1>
                 </div>
-                <div class="grid grid-cols-6 col-span-6 gap-4">
-                    <div>
-                        <select
-                            name="category"
-                            class="mt-1 block w-full"
-                            required
-                            wire:model="selectedCategory"
-                        >
-                            <option value="">
-                                {{ __("Select Category") }}
-                            </option>
-                            @foreach ($categories as $category)
-                            <option value="{{$category->id}}">
-                                {{$category->name}}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <select
-                            name="item"
-                            class="mt-1 block w-full"
-                            required
-                            wire:model="selectedItem"
-                        >
-                            <option value="">
-                                {{ __("Select Item") }}
-                            </option>
-                            @foreach ($fruits as $item)
-                            <option value="{{$item->id}}">
-                                {{$item->name}}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <input
-                            readonly
-                            class="mt-1 block w-full"
-                            value="{{ $itemUnit }}"
-                        />
-                    </div>
-                    <div>
-                        <input
-                            readonly
-                            class="mt-1 block w-full"
-                            value="{{ $itemPrice }}"
-                        />
-                    </div>
-                    <div>
-                        <input
-                            class="mt-1 block w-full"
-                            type="text"
-                            wire:model="itemQty"
-                            placeholder="Qty"
-                        />
-                    </div>
-                    <div>
-                        <input
-                            readonly
-                            class="mt-1 block w-full"
-                            value="{{ $itemAmount }}"
-                        />
-                    </div>
+
+                @foreach ($formSections as $index => $section)
+                <div class="grid grid-cols-1 col-span-1 sm:hidden gap-4 items-center">
+                    <h1 class="text-center">
+                        {{ __("Category") }}
+                    </h1>
+
+                    <h1 class="text-center">
+                        {{ __("Fruit") }}
+                    </h1>
+
+                    <h1 class="text-center">
+                        {{ __("Unit") }}
+                    </h1>
+
+                    <h1 class="text-center">
+                        {{ __("Price") }}
+                    </h1>
+
+                    <h1 class="text-center">
+                        {{ __("Quantity") }}
+                    </h1>
+
+                    <h1 class="text-center">
+                        {{ __("Amount") }}
+                    </h1>
+                    <h1 class="text-center">
+                        {{ __("Action") }}
+                    </h1>
+                </div>
+                    @if ($transactions && sizeof($transactions)>$index)
+                        <livewire:input-form :index="$index" :transaction="$transactions[$index]" :wire:key="'form-'.$index">
+                    @else
+                        <livewire:input-form :index="$index" :wire:key="'form-'.$index">
+                    @endif
+                @endforeach
+                <div class="grid grid-cols-6 col-span-6">
+                    <h1 class="col-span-5 text-end">{{__('Total:')}}</h1>
+                    <h1 class="text-center">{{ $totalFee }}</h1>
                 </div>
             </div>
         </div>
@@ -115,6 +109,7 @@
             <button
                 type="button"
                 id="add-form-button"
+                wire:click.prevent="addFormSection"
                 class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
             >
                 {{ __("Add") }}
@@ -122,8 +117,9 @@
             <button
                 class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
             >
-                {{ __("Insert") }}
+                {{ __("Save") }}
             </button>
         </div>
-    </div>
+    </div>    
 </form>
+

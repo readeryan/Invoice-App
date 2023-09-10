@@ -7,7 +7,7 @@
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 flex gap-6">
-            <div class="mt-10 sm:mt-0 w-full">
+            <div class="w-full">
                 <form
                     method="post"
                     action="{{ route('category.update', ['id'=>$category->id]) }}"

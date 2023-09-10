@@ -2,72 +2,59 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\FruitItem;
-use App\Models\Invoice;
-use App\Models\Transaction;
 use Livewire\Component;
 
 class InvoiceMaker extends Component
 {
-    public $categories;
-    public $selectedItem;
-    public $selectedCategory;
-    public $itemUnit;
-    public $itemPrice;
+    public $formSections = [];
+    public $totalFee;
+    public $transactions = null;
+    public $customer_name;
+    public $action;
+    public $title;
+    public $invoice;
 
-    public $itemQty;
-    public $itemAmount;
-    public $totalTransaction;
-    public $fruits;
+    protected $listeners = ['updateTotal', 'removeFormSection'];
 
-    public Invoice $invoice;
-    public Transaction $transaction;
 
-    protected $rules = [
-        'invoice.customer_name' => 'required|string',
-    ];
-
-    public function mount($categories)
+    public function mount($invoice = null, $action, $title)
     {
-        $this->invoice = new Invoice();
-        $this->categories = $categories;
-        $this->fruits = FruitItem::all();
-    }
-
-    public function updatedSelectedCategory($value)
-    {
-        $this->fruits = FruitItem::where('fruit_category_id', $value)->get();
-    }
-    public function updatedSelectedItem($value)
-    {
-        $item = $this->fruits->find($value);
-        $this->itemUnit = $item->unit;
-        $this->itemPrice = $item->price;
-    }
-    public function updatedItemQty($value)
-    {
-        $this->itemAmount = $value * $this->itemPrice;
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-
-        $fruitItemId = $this->selectedItem;
-        $fruitItem = FruitItem::find($fruitItemId);
-
-        $this->transaction = $fruitItem->transaction()->create([
-            'item_quantity' => $this->itemQty,
-            'item_amount' => $fruitItem->price * $this->itemQty,
-        ]);
-
-        $this->invoice->total_transaction = $this->transaction->item_amount;
-        $this->invoice->save();
-
-        if ($fruitItem) {
-            $this->invoice->transactions()->save($this->transaction);
+        $this->action = $action;
+        $this->title = $title;
+        if ($invoice && sizeof($invoice->transactions) > 0) {
+            $this->invoice = $invoice;
+            $this->transactions = $invoice->transactions;
+            $this->customer_name = $invoice->customer_name;
+            foreach ($this->transactions as $key => $value) {
+                $this->formSections[] = $value->item_amount;
+            }
+            $this->totalFee = array_sum($this->formSections);
+        } else {
+            $this->formSections[] = "";
         }
+    }
+
+    public function addFormSection()
+    {
+        $this->formSections[] = "";
+    }
+
+    public function removeFormSection($index)
+    {
+        // dd($index);
+        $this->updateTotal($index);
+        unset($this->formSections[$index]);
+        $this->formSections = array_values($this->formSections);
+        if ($this->transactions) {
+            // dd($this->transactions[$index]->id);
+            return redirect()->route("invoice.delete.transaction", ['id' => $this->invoice->id, 'transaction_id' => $this->transactions[$index]->id]);
+        }
+    }
+
+    public function updateTotal($index, $total = 0)
+    {
+        $this->formSections[$index] = $total;
+        $this->totalFee = array_sum($this->formSections);
     }
 
     public function render()
