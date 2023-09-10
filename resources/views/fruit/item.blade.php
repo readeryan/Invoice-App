@@ -9,7 +9,7 @@
         <div
             class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 xl:flex-row flex-col flex gap-6"
         >
-            <div class="mt-10 sm:mt-0 w-full">
+            <div class="w-full">
                 <form
                     method="post"
                     action="{{ route('item.store') }}"
@@ -108,10 +108,10 @@
                             class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-md"
                         >
                             <li
-                                class="grid grid-cols-6 gap-2 w-full border-b-2 py-2"
+                                class="grid grid-cols-8 gap-2 w-full border-b-2 py-2"
                             >
                                 <div
-                                    class="item-details grid grid-cols-4 col-span-4"
+                                    class="item-details grid grid-cols-4 col-span-5"
                                 >
                                     <span class="item">
                                         {{ __("Name") }}
@@ -126,16 +126,20 @@
                                         {{ __("Category") }}
                                     </span>
                                 </div>
-                                <div class="actions flex gap-4">
-                                    <p>{{ __("Actions") }}</p>
+                                <div
+                                    class="actions justify-center flex gap-4 col-span-3"
+                                >
+                                    <p class="text-center">
+                                        {{ __("Actions") }}
+                                    </p>
                                 </div>
                             </li>
                             @forelse ($items as $item)
                             <li
-                                class="grid grid-cols-6 gap-2 w-full border-b-2 py-2"
+                                class="grid grid-cols-8 gap-2 w-full border-b-2 py-2"
                             >
                                 <div
-                                    class="item-details grid grid-cols-4 col-span-4"
+                                    class="item-details grid grid-cols-4 col-span-5"
                                 >
                                     <span class="item">
                                         {{ $item->name }}
@@ -150,7 +154,9 @@
                                         {{ $item->category->name }}
                                     </span>
                                 </div>
-                                <div class="actions flex gap-4">
+                                <div
+                                    class="actions justify-center flex gap-4 col-span-3"
+                                >
                                     <a
                                         class="inline-flex items-center px-4 py-2 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition"
                                         href="{{route('item.edit', ['id'=>$item->id])}}"

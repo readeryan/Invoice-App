@@ -6,8 +6,10 @@
     </x-slot>
 
     <div>
-        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 xl:flex-row flex-col flex gap-6">
-            <div class="mt-10 sm:mt-0 w-full">
+        <div
+            class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 xl:flex-row flex-col flex gap-6"
+        >
+            <div class="w-full">
                 <form
                     method="post"
                     action="{{ route('item.update', ['id'=>$item->id]) }}"
@@ -36,15 +38,18 @@
                                         <option value="" disabled>
                                             {{ __("Select Category") }}
                                         </option>
-                                        @foreach ($categories as $category) 
-                                        @if ($category->name == $item->category->name)
+                                        @foreach ($categories as $category) @if
+                                        ($category->name ==
+                                        $item->category->name)
                                         <option
                                             selected
                                             value="{{$category->id}}"
                                         >
-                                        @else                                        
+                                            @else
+                                        </option>
+
                                         <option value="{{$category->id}}">
-                                        @endif                                            
+                                            @endif
                                             {{$category->name}}
                                         </option>
                                         @endforeach

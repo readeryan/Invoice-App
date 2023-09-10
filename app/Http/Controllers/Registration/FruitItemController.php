@@ -15,7 +15,7 @@ class FruitItemController extends Controller
     {
         // dd(5);
         $categories = FruitCategory::all();
-        $items = FruitItem::paginate(3);
+        $items = FruitItem::orderBy("fruit_category_id")->paginate(3);
         return view('fruit.item')->with(compact('categories', 'items'));
     }
     /**
@@ -41,6 +41,8 @@ class FruitItemController extends Controller
             'price' => $request->price,
         ]);
 
+        notify()->success('Fruit Item Successfully Created ⚡️');
+
         return redirect()->route("item");
     }
     public function edit($id)
@@ -64,6 +66,8 @@ class FruitItemController extends Controller
             "name" => $request->name
         ]);
         $category->save();
+        notify()->success('Fruit Item Successfully Updated ⚡️');
+
 
         return redirect()->route("category");
     }

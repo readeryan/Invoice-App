@@ -13,7 +13,7 @@ class FruitCategoryController extends Controller
     public function create()
     {
         // dd(5);
-        $categories = FruitCategory::paginate(3);
+        $categories = FruitCategory::orderBy("name")->paginate(3);
         return view('fruit.category')->with('categories', $categories);
     }
     /**
@@ -33,6 +33,9 @@ class FruitCategoryController extends Controller
         $category = FruitCategory::create([
             'name' => $request->name,
         ]);
+
+        notify()->success('Fruit Category Successfully Created ⚡️');
+
 
         return redirect()->route("category");
     }
@@ -57,6 +60,9 @@ class FruitCategoryController extends Controller
             "name" => $request->name
         ]);
         $category->save();
+
+        notify()->success('Fruit Category Successfully Updated ⚡️');
+
 
         return redirect()->route("category");
     }

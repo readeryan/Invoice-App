@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Invoice\TransactionController;
 use App\Http\Controllers\Registration\FruitItemController;
 use App\Http\Controllers\Registration\FruitCategoryController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,24 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('invoice/{id}/print', [TransactionController::class, 'printPdf'])
+    ->name('invoice.print');
+
+    Route::get('invoice/display', [TransactionController::class, 'index'])
+        ->name('invoice.display');
+    Route::get('invoice', [TransactionController::class, 'create'])
+        ->name('invoice');
+    Route::post('invoice', [TransactionController::class, 'store'])
+        ->name('invoice.store');
+    Route::get('invoice/{id}/edit', [TransactionController::class, 'edit'])
+        ->name('invoice.edit');
+    Route::get('invoice/{id}/delete', [TransactionController::class, 'delete'])
+        ->name('invoice.delete');
+    Route::get('invoice/{id}/delete-transaction/{transaction_id}', [TransactionController::class, 'deleteTransaction'])
+        ->name('invoice.delete.transaction');
+    Route::post('invoice/{id}/edit', [TransactionController::class, 'update'])
+        ->name('invoice.update');
+
     Route::get('fruit-item', [FruitItemController::class, 'create'])
         ->name('item');
     Route::post('fruit-item', [FruitItemController::class, 'store'])
